@@ -51,7 +51,7 @@
         public const string VALIDAR_REFERENCIA = "validarReferencia";
         public const string AUTORIZAR_MONTO = "autorizarMonto";
         public const string NOTIFICAR_PAGO = "notificarPago";
-    
+        public const string VALIDAR_TRANSACCION = "validarTransaccion";
 
 
 

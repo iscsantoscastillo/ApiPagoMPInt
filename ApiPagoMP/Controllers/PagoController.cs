@@ -47,9 +47,11 @@ namespace ApiPagoMP.Controllers
                     {
                         salida = this._iPagoService.validarReferencia(entrada);
 
-                        if (entrada.Referencia.Equals("SL202009000015")) {
-                            return Ok(new {
-                                exitoso = false,                                
+                        if (entrada.Referencia.Equals("SL202009000015"))
+                        {
+                            return Ok(new
+                            {
+                                exitoso = false,
                                 codigoError = "01",
                                 mensajeError = "Referencia inválida"
                             });
@@ -59,7 +61,7 @@ namespace ApiPagoMP.Controllers
                         {
                             return Ok(new
                             {
-                                exitoso = false,                                
+                                exitoso = false,
                                 codigoError = "02",
                                 mensajeError = "Error general"
                             });
@@ -69,7 +71,7 @@ namespace ApiPagoMP.Controllers
                         {
                             return Ok(new
                             {
-                                exitoso = false,                                
+                                exitoso = false,
                                 codigoError = "03",
                                 mensajeError = "Comercio no autorizado"
                             });
@@ -79,7 +81,7 @@ namespace ApiPagoMP.Controllers
                         {
                             return Ok(new
                             {
-                                exitoso = false,                                
+                                exitoso = false,
                                 codigoError = "04",
                                 mensajeError = "Servicio en mantenimiento"
                             });
@@ -89,13 +91,14 @@ namespace ApiPagoMP.Controllers
                         {
                             return Ok(new
                             {
-                                exitoso = false,                               
+                                exitoso = false,
                                 codigoError = "05",
                                 mensajeError = "Error no definido"
                             });
                         }
 
-                        if (entrada.Referencia.Equals("SL202009000014")) {
+                        if (entrada.Referencia.Equals("SL202009000014"))
+                        {
                             mensaje = "Validación de Referencia exitosa.";
                             log.Info(mensaje);
 
@@ -109,11 +112,13 @@ namespace ApiPagoMP.Controllers
                                 mensajeError = String.Empty
                             });
                         }
-                        
-                    } else if (entrada.Evento.Equals(Constantes.AUTORIZAR_MONTO))
+
+                    }
+                    else if (entrada.Evento.Equals(Constantes.AUTORIZAR_MONTO))
                     {
                         if (!entrada.Referencia.Equals("SL202009000014") ||
-                            !entrada.Comercio.Equals("5001")) {
+                            !entrada.Comercio.Equals("5001"))
+                        {
                             return Ok(new
                             {
                                 exitoso = false
@@ -128,19 +133,21 @@ namespace ApiPagoMP.Controllers
                                 exitoso = true
                             });
                         }
-                        else {
+                        else
+                        {
                             return Ok(new
                             {
                                 exitoso = false
                             });
                         }
-                        
+
                     }
                     else if (entrada.Evento.Equals(Constantes.NOTIFICAR_PAGO))
                     {
                         if (entrada.Referencia.Equals("SL202009000019") &&
-                            entrada.Comercio.Equals("5001")){
-                            
+                            entrada.Comercio.Equals("5001"))
+                        {
+
                             return Ok(new
                             {
                                 exitoso = false,
@@ -150,7 +157,7 @@ namespace ApiPagoMP.Controllers
                         if (!entrada.Referencia.Equals("SL202009000014") ||
                             !entrada.Comercio.Equals("5001") ||
                             entrada.NumeroTransaccion.Equals(String.Empty) ||
-                            entrada.FechaHoraTransaccion <= 0 )
+                            entrada.FechaHoraTransaccion <= 0)
                         {
                             return Ok(new
                             {
@@ -173,9 +180,38 @@ namespace ApiPagoMP.Controllers
                             exitoso = true,
                             registradoAnteriormente = false
                         });
-                    }else {
-                        return Ok(new { 
-                            exitoso = false,                           
+                    }
+                    else if (entrada.Evento.Equals(Constantes.VALIDAR_TRANSACCION)) {
+                        if (entrada.Referencia.Equals("SL202009000020")) //Caso en que NO existe
+                        {
+                            return Ok(new
+                            {
+                                exitoso = true,
+                                existe = false
+                            });
+                        }
+                        if (entrada.Referencia.Equals("SL202009000021")) //Caso en que SI existe
+                        {
+                            return Ok(new
+                            {
+                                exitoso = true,
+                                existe = true
+                            });
+                        }
+                        if (entrada.Referencia.Equals("SL202009000022")) //Caso de ERROR
+                        {
+                            return Ok(new
+                            {
+                                exitoso = false,
+                                existe = false
+                            });
+                        }
+                    }
+                    else
+                    {
+                        return Ok(new
+                        {
+                            exitoso = false,
                             codigoError = "06",
                             mensajeError = "Método inválido"
                         });
